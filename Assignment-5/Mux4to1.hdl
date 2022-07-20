@@ -1,0 +1,11 @@
+/*1-bit 4 to 1 Multiplexor using 3 2-to-1 Multiplexors*/
+CHIP Mux4to1 {
+    IN a, b, c, d, sel[2];
+    OUT out;
+
+    PARTS:
+    Mux2to1(a=a, b=b, sel=sel[0], out=c1); //chooses between a and b
+    Mux2to1(a=c, b=d, sel=sel[0], out=c2); // chooses between c and d
+    Mux2to1(a=c1, b=c2, sel=sel[1], out=out); // chooses between output of previous two muxes
+}
+

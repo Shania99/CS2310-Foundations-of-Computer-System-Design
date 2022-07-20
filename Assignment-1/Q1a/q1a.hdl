@@ -1,0 +1,22 @@
+/* F(W,X,Y,Z) = W'X'Z + YZ + WZ' + XZ' */
+
+CHIP q1a {
+	IN w, x, y, z;
+	OUT f;
+	PARTS:
+
+	Not(in=w, out=notw); // W'
+	Not(in=x, out=notx); // X'
+	Not(in=z, out=notz); // Z'
+
+	And(a=y, b=z, out=a); // A = YZ
+	And(a=w, b=notz, out=b); // B = WZ'
+	And(a=x, b=notz, out=c); // C = XZ'
+
+	And(a=notw, b=notx, out=d1); // D1 = W'X'
+	And(a=d1, b=z, out=d); // D = D1.Z
+
+	Or(a=a, b=b, out=f1); // F1 = A + B
+	Or(a=f1, b=c, out=f2); // F2 = F1 + C
+	Or(a=f2, b=d, out=f); // F = F2 + D
+}

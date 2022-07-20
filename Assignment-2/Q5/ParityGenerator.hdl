@@ -1,0 +1,15 @@
+/* Parity Generator: Generate parity bit for 8-bit data */
+
+CHIP ParityGenerator{
+	IN x[8];
+	OUT pg;
+	PARTS:
+	// Taking XOR of each of the bits
+	Xor(a=x[0], b=x[1], out=t1); 
+	Xor(a=t1, b=x[2], out=t2);
+	Xor(a=t2, b=x[3], out=t3);
+	Xor(a=t3, b=x[4], out=t4);
+	Xor(a=t4, b=x[5], out=t5);
+	Xor(a=t5, b=x[6], out=t6);
+	Xor(a=t6, b=x[7], out=pg);
+}

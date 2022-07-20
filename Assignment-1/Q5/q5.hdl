@@ -1,0 +1,46 @@
+/* 3-to-8 bit decoder
+Inputs: 000, 001, 010, 011, 100, 101, 110, 111
+Outputs: 10000000, 01000000, 00100000, 00010000, 00001000, 00000100, 00000010, 00000001
+Expression: 
+	Y0 = X2'X1'X0'
+	Y1 = X2'X1'X0
+	Y2 = X2'X1.X0'
+	Y3 = X2'X1.X0 
+	Y4 = X2.X1'X0'
+	Y5 = X2.X1'X0
+	Y6 = X2.X1.X0'
+	Y7 = X2.X1.X0 */
+
+CHIP q5 {
+	IN x2, x1, x0;
+	OUT y0, y1, y2, y3, y4, y5, y6, y7;
+	PARTS:
+	Not(in=x2, out=notx2); // X2'
+	Not(in=x1, out=notx1); // X1'
+	Not(in=x0, out=notx0); // X0'
+
+	And(a=notx1, b=notx2, out=y01); // Y01 = X2'X1'
+	And(a=y01, b=notx0, out=y0); // Y0 = Y01.X0'
+
+	And(a=notx1, b=notx2, out=y11); // Y11 = X2'X1'
+	And(a=y11, b=x0, out=y1); // Y1 = Y11.X0
+
+	And(a=x1, b=notx2, out=y21); // Y21 = X2'X1
+	And(a=y21, b=notx0, out=y2); // Y2 = Y21.X0'
+
+	And(a=x1, b=notx2, out=y31); // Y31 = X2'X1
+	And(a=y31, b=x0, out=y3); // Y3 = Y31.X0
+
+	And(a=notx1, b=x2, out=y41); // Y41 = X2.X1'
+	And(a=y41, b=notx0, out=y4); // Y4 = Y41.X0'
+
+	And(a=notx1, b=x2, out=y51); // Y51 = X2.X1'
+	And(a=y51, b=x0, out=y5); // Y5 = Y51.X0
+
+	And(a=x1, b=x2, out=y61); // Y61 = X2.X1
+	And(a=y61, b=notx0, out=y6); // Y6 = Y61.X0'
+	
+	And(a=x1, b=x2, out=y71); // Y71 = X2.X1
+	And(a=y71, b=x0, out=y7); // Y7 = Y71.X0
+
+}

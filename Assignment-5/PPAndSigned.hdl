@@ -1,0 +1,19 @@
+/* Generates 16-bit X.yi portion of Partial Product for signed integers with sign extension
+After this, shifting needs to be performed to generate full partial product*/
+CHIP PPAndSigned{
+    IN X[8], yi;
+    OUT out[16];
+
+    PARTS:
+	And(a=X[0], b=yi, out=out[0]);
+	And(a=X[1], b=yi, out=out[1]);
+	And(a=X[2], b=yi, out=out[2]);
+	And(a=X[3], b=yi, out=out[3]);
+	And(a=X[4], b=yi, out=out[4]);
+	And(a=X[5], b=yi, out=out[5]);
+	And(a=X[6], b=yi, out=out[6]);
+	And(a=X[7], b=yi, out=out[7], 
+		out=out[8],out=out[9],out=out[10],out=out[11],
+		out=out[12],out=out[13],out=out[14],out=out[15]); //bits 8 to 15 are same as sign bit (sign extension)
+
+}

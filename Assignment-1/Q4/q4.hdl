@@ -1,0 +1,22 @@
+/* 2-to-4 bit decoder
+Inputs: 00, 01, 10, 11
+Outputs: 1000, 0100, 0010, 0001
+Expression: 
+	Y0 = X1'X0'
+	Y1 = X1'X0
+	Y2 = X1.X0'
+	Y3 = X1.X0 */
+
+CHIP q4 {
+	IN x1, x0;
+	OUT y0, y1, y2, y3;
+	PARTS:
+
+	Not(in=x1, out=notx1); // X1'
+	Not(in=x0, out=notx0); // X0'
+
+	And(a=notx1, b=notx0, out=y0); // Y0 = X1'X0'
+	And(a=notx1, b=x0, out=y1); // Y1 = X1'X0
+	And(a=x1, b=notx0, out=y2); // Y2 = X1.X0'
+	And(a=x1, b=x0, out=y3); // Y3 = X1.X0
+}

@@ -1,0 +1,17 @@
+/* Performs 8-bit No Operation: For any 8 bit operands A and B, outputs 8-bit 0 */
+CHIP NOP {
+    IN a[8], b[8];
+    OUT out[8];
+
+    PARTS:
+	And(a=false, b=false, out=out[0]); // each bit has output as false (0)
+	And(a=false, b=false, out=out[1]);
+	And(a=false, b=false, out=out[2]);
+	And(a=false, b=false, out=out[3]);
+	And(a=false, b=false, out=out[4]);
+	And(a=false, b=false, out=out[5]);
+	And(a=false, b=false, out=out[6]);
+	And(a=false, b=false, out=out[7]);
+	 
+	
+}

@@ -1,0 +1,8 @@
+/* AND with fan-in parameter of 3 */
+CHIP And3{
+	IN a, b, c;
+	OUT out;
+	PARTS:
+	And(a=a, b=b, out=s);
+	And(a=s, b=c, out=out);
+}

@@ -1,0 +1,61 @@
+/* Q1. 16-bit ripple carry adder:
+
+X, Y = signed orinsigned 16-bit integers
+abars = 0 for addition, 1 for subtraction
+sig = 0 for unsigned integer, 1 for signed integer
+s = 16-bit sum bits
+c16 = last carry bit
+of = overflow bit
+*/
+CHIP RCA{
+    IN x[16], y[16], abars, sig;
+    OUT s[16], c16, of;
+    	
+    PARTS:
+	// Generating 1's complement form for abars = 1, for abars=0, no effect
+	Xor(a=y[0], b=abars, out=y20);
+	Xor(a=y[1], b=abars, out=y21);
+	Xor(a=y[2], b=abars, out=y22);
+	Xor(a=y[3], b=abars, out=y23);
+	Xor(a=y[4], b=abars, out=y24);
+	Xor(a=y[5], b=abars, out=y25);
+	Xor(a=y[6], b=abars, out=y26);
+	Xor(a=y[7], b=abars, out=y27);
+	Xor(a=y[8], b=abars, out=y28);
+	Xor(a=y[9], b=abars, out=y29);
+	Xor(a=y[10], b=abars, out=y210);
+	Xor(a=y[11], b=abars, out=y211);
+	Xor(a=y[12], b=abars, out=y212);
+	Xor(a=y[13], b=abars, out=y213);
+	Xor(a=y[14], b=abars, out=y214);
+	Xor(a=y[15], b=abars, out=y215);
+	
+	// c0=abars, cascading full adders for addition
+	FullAdder(xi=x[0], yi=y20, ci=abars, si=s[0], cii=c1);
+	FullAdder(xi=x[1], yi=y21, ci=c1, si=s[1], cii=c2);
+	FullAdder(xi=x[2], yi=y22, ci=c2, si=s[2], cii=c3);
+	FullAdder(xi=x[3], yi=y23, ci=c3, si=s[3], cii=c4);
+	FullAdder(xi=x[4], yi=y24, ci=c4, si=s[4], cii=c5);
+	FullAdder(xi=x[5], yi=y25, ci=c5, si=s[5], cii=c6);
+	FullAdder(xi=x[6], yi=y26, ci=c6, si=s[6], cii=c7);
+	FullAdder(xi=x[7], yi=y27, ci=c7, si=s[7], cii=c8);
+	FullAdder(xi=x[8], yi=y28, ci=c8, si=s[8], cii=c9);
+	FullAdder(xi=x[9], yi=y29, ci=c9, si=s[9], cii=c10);
+	FullAdder(xi=x[10], yi=y210, ci=c10, si=s[10], cii=c11);
+	FullAdder(xi=x[11], yi=y211, ci=c11, si=s[11], cii=c12);
+	FullAdder(xi=x[12], yi=y212, ci=c12, si=s[12], cii=c13);
+	FullAdder(xi=x[13], yi=y213, ci=c13, si=s[13], cii=c14);
+	FullAdder(xi=x[14], yi=y214, ci=c14, si=s[14], cii=c15);
+	FullAdder(xi=x[15], yi=y215, ci=c15, si=s[15], cii=c16test);	
+	
+	// checking overflow: 
+	// For signed: Xor(Cn, Cn-1)
+	// For unsigned: Cn
+	// Overflow = sig.Xor(Cn,Cn-1) + sig'.Cn
+	And(a=c16test, b=c16test, out=c16); //Carry bit out of MSB
+	Xor(a=c15, b=c16test, out=signedof);
+	Not(in=sig, out=unsigned);
+	And(a=c16test, b=unsigned, out = t1);
+	And(a=signedof, b=sig, out=t2);
+	Or(a=t1, b=t2, out=of);
+}

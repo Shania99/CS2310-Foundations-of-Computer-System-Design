@@ -1,0 +1,21 @@
+README:
+Q1. 
+Chip file: RCA.hdl, 
+tst file: q1.tst, 
+cmp file: q1.cmp, 
+out file: q1.out
+
+Q2. 
+Chip file: Adder16.hdl, 
+tst file: q2.tst, 
+cmp file: q1.cmp, 
+out file: q2.out
+
+Q3. 
+Chip file: Adder16higher.hdl,
+tst file: q3.tst, 
+cmp file: q1.cmp, 
+out file: q3.out
+
+Supporting Chips: CarryGenerator.hdl, CLA.hdl, CLAHigher.hdl, FullAdder.hdl, And3.hdl, And4.hdl, And5.hdl, Xor.hdl, Xor16.hdl
+

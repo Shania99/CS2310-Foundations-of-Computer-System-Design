@@ -1,0 +1,30 @@
+/* Supporting Chip: PGgenerator
+
+X, Y = signed or unsigned 16-bit integers
+Pi, Gi = Higher order propagation and generation terms
+*/
+CHIP PGgenerator {
+    IN x[4], y[4];
+    OUT Pi, Gi;
+    
+    PARTS:
+
+	Xor(a=x[0], b=y[0], out=p0);
+	Xor(a=x[1], b=y[1], out=p1);
+	Xor(a=x[2], b=y[2], out=p2);
+	Xor(a=x[3], b=y[3], out=p3);
+
+	And(a=x[0], b=y[0], out=g0);
+	And(a=x[1], b=y[1], out=g1);
+	And(a=x[2], b=y[2], out=g2);
+	And(a=x[3], b=y[3], out=g3);
+
+	And4(a=p3, b=p2, c=p1, d=p0, out=Pi);
+	And4(a=p3, b=p2, c=p1, d=g0, out=u1);
+	And3(a=p3, b=p2, c=g1, out=u2);
+	And(a=p3, b=g2, out=u3);
+	Or(a=u1, b=u2, out=e1);
+	Or(a=e1, b=u3, out=e2);
+	Or(a=e2, b=g3, out=Gi);
+   
+}

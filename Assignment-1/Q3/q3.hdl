@@ -1,0 +1,19 @@
+/* 4-to-2 bit priority encoder
+Inputs: 1xxx, 01xx, 001x, 0001
+Outputs: 00, 01, 10, 11
+Expression: 
+	Y1 = X0'X1'
+	Y0 = X0'X2' +  X0'X1 */
+
+CHIP q3 {
+	IN x0, x1, x2, x3;
+	OUT y1, y0;
+	PARTS:
+	Not(in=x0, out=notx0); // X0'
+	Not(in=x1, out=notx1); // X1'
+	Not(in=x2, out=notx2); // X2'
+	And(a=notx0, b=notx1, out=y1); // Y1 = X0'X1'
+	And(a=notx0, b=x1, out=z); // Z = X0'X1
+	And(a=notx0, b=notx2, out=y); // Y = X0'X2'
+	Or(a=y, b=z, out=y0); // Y0 = Y + Z
+}

@@ -1,0 +1,97 @@
+/* 8-bit 4-to-1 multiplexer */
+
+CHIP Mux8bit4to1 {
+	IN a[8], b[8], c[8], d[8], s1, s0;
+	OUT y[8];
+
+	PARTS:
+		Not(in=s1,out=nots1);
+		Not(in=s0,out=nots0);
+
+		And(a=s1, b=s0, out=s1s0); // S1.S0
+		And(a=s1, b=nots0, out=s1nots0); // S1.S0'
+		And(a=nots1, b=s0, out=nots1s0); // S1'.S0
+		And(a=nots1, b=nots0, out=nots1nots0); // S1'.S0'
+
+		And(a=nots1nots0, b=a[0], out=term00); // S1'S0'X00
+		And(a=nots1s0, b=b[0], out=term01); // S1'S0.X10
+		And(a=s1nots0, b=c[0], out=term02); // S1.S0'X20
+		And(a=s1s0, b=d[0], out=term03); // S1.S0.X30 
+
+		And(a=nots1nots0, b=a[1], out=term10); // S1'S0'X01
+		And(a=nots1s0, b=b[1], out=term11); // S1'S0.X11
+		And(a=s1nots0, b=c[1], out=term12); // S1.S0'X21
+		And(a=s1s0, b=d[1], out=term13); // S1.S0.X31 
+
+		And(a=nots1nots0, b=a[2], out=term20); // S1'S0'X02
+		And(a=nots1s0, b=b[2], out=term21); // S1'S0.X12
+		And(a=s1nots0, b=c[2], out=term22); // S1.S0'X22
+		And(a=s1s0, b=d[2], out=term23); // S1.S0.X32 
+
+		And(a=nots1nots0, b=a[3], out=term30); // S1'S0'X03
+		And(a=nots1s0, b=b[3], out=term31); // S1'S0.X13
+		And(a=s1nots0, b=c[3], out=term32); // S1.S0'X23
+		And(a=s1s0, b=d[3], out=term33); // S1.S0.X33 
+
+		And(a=nots1nots0, b=a[4], out=term40); // S1'S0'X04
+		And(a=nots1s0, b=b[4], out=term41); // S1'S0.X14
+		And(a=s1nots0, b=c[4], out=term42); // S1.S0'X24
+		And(a=s1s0, b=d[4], out=term43); // S1.S0.X34 
+
+		And(a=nots1nots0, b=a[5], out=term50); // S1'S0'X05
+		And(a=nots1s0, b=b[5], out=term51); // S1'S0.X15
+		And(a=s1nots0, b=c[5], out=term52); // S1.S0'X25
+		And(a=s1s0, b=d[5], out=term53); // S1.S0.X35 
+
+		And(a=nots1nots0, b=a[6], out=term60); // S1'S0'X06
+		And(a=nots1s0, b=b[6], out=term61); // S1'S0.X16
+		And(a=s1nots0, b=c[6], out=term62); // S1.S0'X26
+		And(a=s1s0, b=d[6], out=term63); // S1.S0.X36 
+
+		And(a=nots1nots0, b=a[7], out=term70); // S1'S0'X07
+		And(a=nots1s0, b=b[7], out=term71); // S1'S0.X17
+		And(a=s1nots0, b=c[7], out=term72); // S1.S0'X27
+		And(a=s1s0, b=d[7], out=term73); // S1.S0.X37 
+
+		// Taking Or of terms computed above to obtain corresponding output bit
+		Or(a=term00, b=term01, out=f01);
+		Or(a=term02, b=term03, out=f02);
+		Or(a=f01, b=f02, out=y[0]); // Y0 = term00 + term01 + term02 + term03
+
+
+		Or(a=term10, b=term11, out=f11);
+		Or(a=term12, b=term13, out=f12);
+		Or(a=f11, b=f12, out=y[1]); // Y1 = term10 + term11 + term12 + term13
+
+
+		Or(a=term20, b=term21, out=f21);
+		Or(a=term22, b=term23, out=f22);
+		Or(a=f21, b=f22, out=y[2]); // Y2 = term20 + term21 + term22 + term23
+
+
+		Or(a=term30, b=term31, out=f31);
+		Or(a=term32, b=term33, out=f32);
+		Or(a=f31, b=f32, out=y[3]); // Y3 = term30 + term31 + term32 + term33
+
+
+		Or(a=term40, b=term41, out=f41);
+		Or(a=term42, b=term43, out=f42);
+		Or(a=f41, b=f42, out=y[4]); // Y4 = term40 + term41 + term42 + term43
+
+
+		Or(a=term50, b=term51, out=f51);
+		Or(a=term52, b=term53, out=f52);
+		Or(a=f51, b=f52, out=y[5]); // Y5 = term50 + term51 + term52 + term53
+
+
+		Or(a=term60, b=term61, out=f61);
+		Or(a=term62, b=term63, out=f62);
+		Or(a=f61, b=f62, out=y[6]); // Y6 = term60 + term61 + term62 + term63
+
+
+		Or(a=term70, b=term71, out=f71);
+		Or(a=term72, b=term73, out=f72);
+		Or(a=f71, b=f72, out=y[7]); // Y7 = term70 + term71 + term72 + term73
+
+
+}

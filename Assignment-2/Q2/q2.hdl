@@ -1,0 +1,9 @@
+/* 2-bit 4-to-1 priority multiplexer
+Combination of Priority Encoder and 2-bit 4-to-1 multiplexer */
+CHIP q2{
+	IN a[2], b[2], c[2], d[2], r0, r1, r2, r3;
+	OUT y[2];
+	PARTS:
+	PriorityEncoder(x0=r0, x1=r1,x2=r2, x3=r3, y1=sel1, y0=sel0); // Priority Encoder
+	q1(a=a, b=b, c=c, d=d, s1=sel1, s0=sel0, y=y); // Multiplexer
+}

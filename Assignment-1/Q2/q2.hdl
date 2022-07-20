@@ -1,0 +1,17 @@
+/* 4-to-2 bit encoder
+Inputs: 1000, 0100, 0010, 0001
+Outputs: 00, 01, 10, 11
+Expression: 
+	Y1 = X0'X1'
+	Y0 = X0'X2' */
+
+CHIP q2 {
+	IN x0, x1, x2, x3;
+	OUT y1, y0;
+	PARTS:
+	Not(in=x0, out=notx0); // X0'
+	Not(in=x1, out=notx1); // X1'
+	Not(in=x2, out=notx2); // X2'
+	And(a=notx0, b=notx1, out=y1); // Y1 = X0'X1' 
+	And(a=notx0, b=notx2, out=y0); // Y0 = X0'X2'
+}

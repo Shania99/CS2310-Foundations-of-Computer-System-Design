@@ -1,0 +1,14 @@
+README:
+Q1a. 
+Chip file: UnsignedMult.hdl, 
+tst file: unsigned.tst, 
+cmp file: unsigned.cmp, 
+out file: q1.out
+
+Q1b. 
+Chip file: SignedMult.hdl, 
+tst file: signed.tst, 
+cmp file: signed.cmp, 
+out file: q2.out
+
+Supporting Chips: Adder16.hdl, PPAnd.hdl, PPAndSigned.hdl, Reducer3to2.hdl, ShiftLeft.hdl, CLA.hdl, FullAdder.hdl, And3.hdl, And4.hdl, And5.hdl, Xor.hdl, Xor16.hdl, Not16.hdl

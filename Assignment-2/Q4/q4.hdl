@@ -1,0 +1,26 @@
+/* 8-bit comparator
+Checks if X==Y */
+
+CHIP q4{
+	IN x[8], y[8];
+	OUT z;
+	PARTS:
+	// Taking XNOR of each of the corresponding bits in X and Y
+	Xnor(a=x[0], b=y[0], out=t1);
+	Xnor(a=x[1], b=y[1], out=t2);
+	Xnor(a=x[2], b=y[2], out=t3);
+	Xnor(a=x[3], b=y[3], out=t4);	
+	Xnor(a=x[4], b=y[4], out=t5);
+	Xnor(a=x[5], b=y[5], out=t6);
+	Xnor(a=x[6], b=y[6], out=t7);
+	Xnor(a=x[7], b=y[7], out=t8);
+
+	// Taking AND of all the XNOR output bits
+	And(a=t1, b=t2, out=z1);
+	And(a=z1, b=t3, out=z2);
+	And(a=z2, b=t4, out=z3);
+	And(a=z3, b=t5, out=z4);
+	And(a=z4, b=t6, out=z5);
+	And(a=z5, b=t7, out=z6);
+	And(a=z6, b=t8, out=z);
+}

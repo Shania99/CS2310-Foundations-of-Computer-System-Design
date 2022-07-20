@@ -1,0 +1,40 @@
+/* Q1. 8-bit ALU chip:
+000: NOP
+001: AND
+010: OR
+011: XOR
+100: ADD
+101: SUBTRACT
+110: UNSIGNED MULTIPLICATION
+111: SIGNED MULTIPLICATION*/
+
+CHIP ALU {
+    IN X[8], Y[8], ubars, opcode[3];
+    OUT Z[8], OF;
+
+    PARTS:
+	// Logical Operations
+	NOP(a=X, b=Y, out=Znop);
+	And8bit(a=X, b=Y, out=Zand);
+	Or8bit(a=X, b=Y, out=Zor);
+	Xor8bit(a=X, b=Y, out=Zxor);
+	
+	// Arithmetic Operations
+	// NOTE: OF_Add and OF_subtract already take care of signed and unsigned overflow case separately in the Adder chip
+	// Hence it need notbe handled separately in the ALU chip
+	Adder8(x=X, y=Y, abars=false, sig=ubars, s=Zadd, c8=c8add, of=ofadd);
+	Adder8(x=X, y=Y, abars=true, sig=ubars, s=Zsub, c8=c8sub, of=ofsub);
+	UnsignedMult(X=X , Y=Y, out=Zumul, OF=ofumul);
+	SignedMult(X=X , Y=Y, out=Zimul, OF=ofimul);
+
+	// Choosing output bits according to OPCODE (specified operation) using 2 8-bit 4-to1 Muxes and 1 8-bit 2-to-1 Mux
+	Mux8bit4to1(a=Znop, b=Zand, c=Zor, d=Zxor, s1=opcode[1], s0=opcode[0], y=Zint1);
+	Mux8bit4to1(a=Zadd, b=Zsub, c=Zumul, d=Zimul, s1=opcode[1], s0=opcode[0], y=Zint2);
+	Mux8bit2to1(a=Zint1, b=Zint2, s=opcode[2], y=Z);
+
+	// Choosing overflow bit according to OPCODE (specified operation) using 1 1-bit 4-to1 Mux and 1 1-bit 2-to-1 Mux
+	// Overflow bit is output only for arithmetic operations, for logical operations it is 0 by default (handled by 2-t-1 Mux
+	Mux4to1(a=ofadd, b=ofsub, c=ofumul, d=ofimul, sel=opcode[0..1], out=out);
+	Mux2to1(a=false, b=out, sel=opcode[2], out=OF);
+			
+}

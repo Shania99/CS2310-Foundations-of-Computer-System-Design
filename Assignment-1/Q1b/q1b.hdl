@@ -1,0 +1,30 @@
+/* F(W,X,Y,Z) = W'X'Z + YZ + WZ' + XZ' 
+Implementing F using 2-Input NAND gates only:
+F = (((W + X)'.Z)'.(Y.Z)'.(W.Z')'.(X.Z'))' */
+
+CHIP q1b {
+	IN w, x, y, z;
+	OUT f;
+	PARTS:
+
+	Nand(a=w, b=w, out=notw); // W' = (W.W)' = Nand(W,W)
+	Nand(a=x, b=x, out=notx); // X' = (X.X)' = Nand(X,X)
+	Nand(a=z, b=z, out=notz); // Z' = (Z.Z)' = Nand(Z,Z)
+
+	// 2-variable terms:
+	Nand(a=y, b=z, out=a); // A = (Y.Z)' = Nand(Y,Z)
+	Nand(a=w, b=notz, out=b); // B = (W.Z')' = Nand(W,Z')
+	Nand(a=x, b=notz, out=c); // C = (X.Z')' = Nand(X,Z')
+
+	// 3-variable term:
+	Nand(a=notw, b=notx, out=d1); // D1 = (W'.X')' = (W + X)
+	Nand(a=d1, b=d1, out=notd1); // D1' = ((W + X).(W + X))' = (W + X)'
+	Nand(a=notd1, b=z, out=d); // D = (D1'.Z)' = ((W + X)'.Z)' = (W'X'Z)'
+
+	// 4-component term:
+	Nand(a=a, b=b, out=f1); // F1 = (A.B)'
+	Nand(a=c, b=d, out=f2); // F2 = (C.D)' 
+	Nand(a=f1, b=f1, out=notf1); // F1' = (A.B)
+	Nand(a=f2, b=f2, out=notf2); // F2' = (C.D)
+	Nand(a=notf1, b=notf2, out=f); // F = (F1'.F2')' = (A.B.C.D)'
+}

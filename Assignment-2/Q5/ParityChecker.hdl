@@ -1,0 +1,9 @@
+/* Parity Checker: Check parity of received data and see if it matches with sent data */
+
+CHIP ParityChecker{
+	IN y[8], pgx; 
+	OUT z;
+	PARTS:
+	ParityGenerator(x=y, pg = pgy); // generate parity of received data
+	Xor(a=pgx, b=pgy, out=z); //  Check if Pg_x = Pg_y
+}
