@@ -1,4 +1,4 @@
-# CS2310-Foundations-of-Computer-System-Design
+# CS2310: Foundations of Computer System Design
 
 __Objective:__
 
